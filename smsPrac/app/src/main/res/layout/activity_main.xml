@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.androidtown.smsprac.MainActivity">
+
+    <EditText
+        android:layout_width="350dp"
+        android:inputType="textMultiLine|textNoSuggestions"
+        android:ems="10"
+        android:id="@+id/editText"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="18dp"
+        android:layout_height="325dp"
+        android:cursorVisible="true"
+        android:background="@drawable/border"
+        android:gravity="top"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText"
+        android:layout_alignLeft="@+id/editText"
+        android:layout_alignStart="@+id/editText"
+        android:layout_marginLeft="44dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="28dp"
+        android:id="@+id/button1"
+        android:text="전송"
+        android:onClick="onSendButtonClicked" />
+
+    <Button
+        android:text="닫기"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="44dp"
+        android:layout_marginEnd="44dp"
+        android:id="@+id/button2"
+        android:layout_alignBaseline="@+id/button1"
+        android:layout_alignBottom="@+id/button1"
+        android:layout_alignRight="@+id/editText"
+        android:layout_alignEnd="@+id/editText"
+        android:onClick="onExitButtonClicked" />
+
+    <TextView
+        android:text="0 / 80 바이트"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText"
+        android:layout_alignRight="@+id/editText"
+        android:layout_alignEnd="@+id/editText"
+        android:id="@+id/textView"
+        android:layout_width="100dp"
+        />
+
+</RelativeLayout>
