@@ -2,9 +2,12 @@ package org.androidtown.demo2;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by jerry on 2017-02-16.
@@ -18,13 +21,25 @@ public class ItemView extends LinearLayout {
     private TextView days;
     private Switch enableBtn;
 
-    public ItemView(Context context, Item item) {
+    public ItemView(final Context context, Item item) {
         super(context);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.item , this, true);
 
         enableBtn = (Switch)findViewById(R.id.enableBtn);
         enableBtn.setFocusable(false);
+
+        //enable button이 check 되면 알람 활성화 uncheck 되면 알람 cancel
+        enableBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    Toast.makeText(context, "활성화" , Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(context, "비활성화" , Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
         stationName = (TextView) findViewById(R.id.station);
         stationName.setText(item.getData(0));
@@ -37,10 +52,6 @@ public class ItemView extends LinearLayout {
 
         days = (TextView) findViewById(R.id.days);
         days.setText(item.getData(3));
-    }
-
-    public Switch getEnableBtn() {
-        return enableBtn;
     }
 
     public void setText(int index, String data){

@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //view, button 들 참조
-        enableBtn = (Switch) findViewById(R.id.enableBtn);
         addBtn = (FloatingActionButton) findViewById(fab);
         listView = (ListView) findViewById(R.id.listView);
         adapter = new ItemListAdapter(this);
@@ -50,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //아이템 추가
+        //아이템 추가 및 알람생성
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     private void refresh(){
         adapter.notifyDataSetChanged();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

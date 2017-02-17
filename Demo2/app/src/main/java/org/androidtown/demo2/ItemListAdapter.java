@@ -48,6 +48,7 @@ public class ItemListAdapter extends BaseAdapter {
         if(convertView == null) itemView = new ItemView(mConText, mItems.get(position));
         else itemView = (ItemView) convertView;
 
+        itemView.setEnable(mItems.get(position).getEnable());
         itemView.setText(0,mItems.get(position).getData(0));
         itemView.setText(1,mItems.get(position).getData(1));
         itemView.setText(2,mItems.get(position).getData(2));
