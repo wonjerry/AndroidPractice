@@ -1,11 +1,9 @@
 package org.androidtown.demo2;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Switch;
 
 import java.util.ArrayList;
 
@@ -44,11 +42,13 @@ public class ItemListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ItemView itemView;
 
+        //성능을 향상시키기 위해서 아래 주석부분을 해야하긴 하는데, 이렇게하면 enable 버튼이 item의 상태와 관계없이 자기맘대로된다.
+        //if(convertView == null) itemView = new ItemView(mConText, mItems.get(position));
+        //else itemView = (ItemView) convertView;
 
-        if(convertView == null) itemView = new ItemView(mConText, mItems.get(position));
-        else itemView = (ItemView) convertView;
+        itemView = new ItemView(mConText, mItems.get(position));
 
-        itemView.setEnable(mItems.get(position).getEnable());
+        itemView.setEnableBtn(mItems.get(position).getEnable());
         itemView.setText(0,mItems.get(position).getData(0));
         itemView.setText(1,mItems.get(position).getData(1));
         itemView.setText(2,mItems.get(position).getData(2));

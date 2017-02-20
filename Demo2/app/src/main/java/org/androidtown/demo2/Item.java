@@ -22,7 +22,6 @@ public class Item {
         mData[1] = direction;
         mData[2] = startTime;
         mData[3] = duringTime;
-
         enalble = true;
     }
 
@@ -43,11 +42,10 @@ public class Item {
     public void setData(String[] obj){
         mData = obj;
     }
+
     public void setEnalble(boolean enalble){
         this.enalble = enalble;
     }
-
-
 
     public void setData(String stationName, String direction, String startTime, String days) {
         this.mData = new String[4];

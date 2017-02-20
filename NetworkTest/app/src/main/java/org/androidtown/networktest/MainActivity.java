@@ -11,8 +11,11 @@ import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        System.setProperty("http.keepAlive","false");
         requestBtn = (Button) findViewById(R.id.requestBtn);
         input = (EditText) findViewById(R.id.input1);
         result = (TextView) findViewById(R.id.txtMsg);
@@ -35,8 +38,15 @@ public class MainActivity extends AppCompatActivity {
         requestBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String urlstr = input.getText().toString().trim();
+                String encodedStationName = null;
 
+                try {
+                    encodedStationName = URLEncoder.encode("하계".trim(),"UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                //String urlstr = input.getText().toString().trim();
+                String urlstr = "http://swopenapi.seoul.go.kr/api/subway/476f787954646c64313039455278624d/xml/realtimeStationArrival/1/10/"+encodedStationName+"/";
                 ConnectThread thread = new ConnectThread(urlstr);
                 thread.start();
             }
@@ -65,19 +75,19 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public String request(String urlStr){
-            StringBuilder output = new StringBuilder();
 
+            StringBuilder output = new StringBuilder();
             try{
                 URL url = new URL(urlStr);
-
-                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                URLConnection connection = url.openConnection();
+                HttpURLConnection conn = (HttpURLConnection) connection;
                 if(conn != null){
                     conn.setConnectTimeout(1000);
                     conn.setRequestMethod("GET");
                     conn.setDoInput(true);
-                    conn.setDoOutput(true);
 
                     int resCode = conn.getResponseCode();
+                    Log.e("hi:",""+resCode);
                     if (resCode == HttpURLConnection.HTTP_OK){
                         BufferedReader reader = new BufferedReader( new InputStreamReader(conn.getInputStream()));
                         String line = null;
@@ -88,13 +98,11 @@ public class MainActivity extends AppCompatActivity {
                             }
                             output.append(line+'\n');
                         }
+
                         reader.close();
                         conn.disconnect();
                     }
-
                 }
-
-
             }catch (Exception e){
                 Log.e("SampleHTTP", "Exception in processing response",e);
                 e.printStackTrace();

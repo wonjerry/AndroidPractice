@@ -2,7 +2,6 @@ package org.androidtown.demo2;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -21,7 +20,7 @@ public class ItemView extends LinearLayout {
     private TextView days;
     private Switch enableBtn;
 
-    public ItemView(final Context context, Item item) {
+    public ItemView(final Context context, final Item item) {
         super(context);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.item , this, true);
@@ -34,8 +33,10 @@ public class ItemView extends LinearLayout {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
+                    item.setEnalble(true);
                     Toast.makeText(context, "활성화" , Toast.LENGTH_LONG).show();
                 }else{
+                    item.setEnalble(false);
                     Toast.makeText(context, "비활성화" , Toast.LENGTH_LONG).show();
                 }
             }
@@ -52,6 +53,10 @@ public class ItemView extends LinearLayout {
 
         days = (TextView) findViewById(R.id.days);
         days.setText(item.getData(3));
+    }
+
+    public void setEnableBtn(boolean enable){
+        enableBtn.setChecked(enable);
     }
 
     public void setText(int index, String data){

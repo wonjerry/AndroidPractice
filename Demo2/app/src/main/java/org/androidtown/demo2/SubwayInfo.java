@@ -11,8 +11,6 @@ import java.net.URLEncoder;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import static org.androidtown.demo2.R.id.station;
-
 /**
  * Created by dldnj on 2017-02-17.
  */
@@ -44,9 +42,8 @@ public class SubwayInfo {
         Document doc = null;
 
         //try{
-
             encodedStationName = URLEncoder.encode(stationName.trim(),"UTF-8");
-            url = new URL("http://swopenapi.seoul.go.kr/api/subway/476f787954646c64313039455278624d/xml/realtimeStationArrival/1/10/"+station+"/");
+            url = new URL("http://swopenapi.seoul.go.kr/api/subway/476f787954646c64313039455278624d/xml/realtimeStationArrival/1/10/"+encodedStationName+"/");
             connection = url.openConnection();
             doc = parseXML(connection.getInputStream());
 
@@ -65,7 +62,7 @@ public class SubwayInfo {
         return doc;
     }
 
-    public void getSubwayInfo(String stationName) throws Exception{
+    public void getSubwayInfo(String stationName, String direct) throws Exception{
 
             Document doc = getXmlInfo(stationName); // 예외발생하면 이걸 쓰는곳에서 처리
             NodeList arrivalInfomation =  doc.getElementsByTagName("arvlMsg2");
@@ -74,10 +71,12 @@ public class SubwayInfo {
             NodeList totalNumber = doc.getElementsByTagName("total");
             System.out.println(stationName);
             for(int i=0; i<Integer.parseInt(totalNumber.item(0).getTextContent());i++){
-                System.out.println(subwayNumber.item(i).getTextContent());
-                System.out.println(subwayDirection.item(i).getTextContent());
-                System.out.println(arrivalInfomation.item(i).getTextContent());
-                System.out.println("--------------------------------------------");
+                if(subwayDirection.item(i).getTextContent().contains("공릉방면")){
+                    System.out.println(subwayNumber.item(i).getTextContent());
+                    System.out.println(subwayDirection.item(i).getTextContent());
+                    System.out.println(arrivalInfomation.item(i).getTextContent());
+                    System.out.println("--------------------------------------------");
+                }
             }
 
 
