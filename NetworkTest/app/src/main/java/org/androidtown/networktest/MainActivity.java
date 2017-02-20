@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
                 String encodedStationName = null;
 
                 try {
-                    encodedStationName = URLEncoder.encode("하계".trim(),"UTF-8");
+                    encodedStationName = URLEncoder.encode("공항시장".trim(),"UTF-8");
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }

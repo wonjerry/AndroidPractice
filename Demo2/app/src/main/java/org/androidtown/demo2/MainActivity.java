@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
     ListView listView;
     ItemListAdapter adapter;
     FloatingActionButton addBtn;
-    Switch enableBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
