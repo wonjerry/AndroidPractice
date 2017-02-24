@@ -9,13 +9,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,11 +48,10 @@ public class MainActivity extends AppCompatActivity {
                 String encodedStationName = null;
 
                 try {
-                    encodedStationName = URLEncoder.encode("공항시장".trim(),"UTF-8");
+                    encodedStationName = URLEncoder.encode(input.getText().toString().trim(),"UTF-8");
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                //String urlstr = input.getText().toString().trim();
                 String urlstr = "http://swopenapi.seoul.go.kr/api/subway/476f787954646c64313039455278624d/xml/realtimeStationArrival/1/10/"+encodedStationName+"/";
                 ConnectThread thread = new ConnectThread(urlstr);
                 thread.start();
@@ -74,6 +80,21 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        private Document parseXML(InputStream stream) throws Exception{
+            DocumentBuilderFactory objDocumentBuilderFactory = null;
+            DocumentBuilder objDocumentBuilder = null;
+            Document doc = null;
+
+            try{
+                objDocumentBuilderFactory = DocumentBuilderFactory.newInstance();
+                objDocumentBuilder = objDocumentBuilderFactory.newDocumentBuilder();
+                doc = objDocumentBuilder.parse(stream);
+
+            }catch (Exception e){}
+            return doc;
+        }
+
+
         public String request(String urlStr){
 
             StringBuilder output = new StringBuilder();
@@ -89,18 +110,17 @@ public class MainActivity extends AppCompatActivity {
                     int resCode = conn.getResponseCode();
                     Log.e("hi:",""+resCode);
                     if (resCode == HttpURLConnection.HTTP_OK){
-                        BufferedReader reader = new BufferedReader( new InputStreamReader(conn.getInputStream()));
-                        String line = null;
-                        while(true){
-                            line = reader.readLine();
-                            if(line == null){
-                                break;
-                            }
-                            output.append(line+'\n');
-                        }
+                        Document doc = parseXML(conn.getInputStream());
+                        int total = Integer.parseInt(doc.getElementsByTagName("total").item(0).getTextContent());
+                        NodeList arrivalInformaltion = doc.getElementsByTagName("arvlMsg2");
+                        NodeList subwayDirection = doc.getElementsByTagName("trainLineNm");
 
-                        reader.close();
-                        conn.disconnect();
+                        for(int i=0; i<total; i++){
+                            output.append(subwayDirection.item(i).getTextContent()+'\n'
+                                    +arrivalInformaltion.item(i).getTextContent()+'\n'
+                                    +"------------------------------------"
+                                    +'\n');
+                        }
                     }
                 }
             }catch (Exception e){
