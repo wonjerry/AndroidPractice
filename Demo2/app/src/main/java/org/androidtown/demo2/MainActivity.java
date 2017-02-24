@@ -1,6 +1,5 @@
 package org.androidtown.demo2;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import static org.androidtown.demo2.R.id.fab;
@@ -53,8 +51,9 @@ public class MainActivity extends AppCompatActivity {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,SettingView.class);
-                startActivity(intent);
+                //Intent intent = new Intent(MainActivity.this,SettingView.class);
+                //startActivity(intent);
+                addNewItem();
                 refresh();
             }
         });
@@ -71,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
     private void refresh(){
         adapter.notifyDataSetChanged();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
