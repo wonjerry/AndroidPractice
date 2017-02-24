@@ -20,4 +20,10 @@
         android:text="direction"
         android:textSize="20dp" />
 
+    <Button
+        android:id="@+id/alarmSettingBtn"
+        android:text="set"
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
+
 </LinearLayout>

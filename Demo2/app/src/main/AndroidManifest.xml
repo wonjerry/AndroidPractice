@@ -23,7 +23,12 @@
 
         <activity android:name=".SettingView"
             android:label="Demo2"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme"
+            >
+        </activity>
+        <activity android:name=".TimeSettingView"
+            android:label="Demo2"
+            android:theme="@style/AppTheme">
 
         </activity>
     </application>

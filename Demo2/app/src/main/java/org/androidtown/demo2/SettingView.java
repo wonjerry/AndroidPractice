@@ -3,6 +3,7 @@ package org.androidtown.demo2;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -43,6 +44,8 @@ public class SettingView extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setting);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.settingtoolbar);
+        toolbar.setTitle("역 검색");
 
         stations = getResources().getStringArray(R.array.stationNames);
 
@@ -117,6 +120,7 @@ public class SettingView extends Activity {
                         refresh();
                     }
                 });
+
             }catch (Exception e){
 
             }

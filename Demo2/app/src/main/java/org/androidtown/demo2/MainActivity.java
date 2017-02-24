@@ -1,5 +1,6 @@
 package org.androidtown.demo2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("지금 온다!");
         setSupportActionBar(toolbar);
 
         //view, button 들 참조
@@ -51,10 +53,10 @@ public class MainActivity extends AppCompatActivity {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(MainActivity.this,SettingView.class);
-                //startActivity(intent);
-                addNewItem();
-                refresh();
+                Intent intent = new Intent(MainActivity.this,SettingView.class);
+                startActivity(intent);
+                //addNewItem();
+                //refresh();
             }
         });
 
