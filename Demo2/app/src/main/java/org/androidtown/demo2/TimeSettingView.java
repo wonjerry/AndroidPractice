@@ -49,14 +49,6 @@ public class TimeSettingView extends Activity implements View.OnClickListener{
         sat = (ToggleButton) findViewById(R.id.sat);
         sun = (ToggleButton) findViewById(R.id.sun);
 
-        mon.setOnClickListener(this);
-        tue.setOnClickListener(this);
-        wed.setOnClickListener(this);
-        thr.setOnClickListener(this);
-        fri.setOnClickListener(this);
-        sat.setOnClickListener(this);
-        sun.setOnClickListener(this);
-
         resultDays = new boolean[7];
 
         Intent intent = getIntent();
@@ -64,6 +56,14 @@ public class TimeSettingView extends Activity implements View.OnClickListener{
             stationName = intent.getExtras().getString("stationName");
             direction = intent.getExtras().getString("direction");
         }
+
+        mon.setOnClickListener(this);
+        tue.setOnClickListener(this);
+        wed.setOnClickListener(this);
+        thr.setOnClickListener(this);
+        fri.setOnClickListener(this);
+        sat.setOnClickListener(this);
+        sun.setOnClickListener(this);
 
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,9 +92,9 @@ public class TimeSettingView extends Activity implements View.OnClickListener{
         int hour = timePicker.getHour();
         int min = timePicker.getMinute();
 
-        if(hour > 12) return "오후 "+ (hour -= 12)  + " 시 "+ min + "분";
-        if(hour == 12) return "오후 "+ hour + " 시 "+ min + "분";
-        return "오전"+ hour + " 시 "+ min + "분";
+        if(hour > 12) return "오후 "+ (hour -= 12)  + " 시 "+ min + " 분";
+        if(hour == 12) return "오후 "+ hour + " 시 "+ min + " 분";
+        return "오전 "+ hour + " 시 "+ min + " 분";
     }
 
     private String getDaysInfo(){
