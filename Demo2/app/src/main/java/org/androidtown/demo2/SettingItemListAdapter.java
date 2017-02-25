@@ -53,7 +53,7 @@ public class SettingItemListAdapter extends BaseAdapter {
         settingItemView = new SettingItemView(mConText, mItems.get(position));
 
         settingItemView.setText(0,mItems.get(position).getData(0));
-        settingItemView.setText(1,mItems.get(position).getData(1));
+        settingItemView.setText(1,mItems.get(position).getData(1)+" 방면");
 
         return settingItemView;
     }

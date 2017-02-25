@@ -77,8 +77,6 @@ public class SettingView extends Activity {
         okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 String encodedStationName = null;
                 try {
                     encodedStationName = URLEncoder.encode(autoTextView.getText().toString().trim(),"UTF-8");
@@ -88,9 +86,9 @@ public class SettingView extends Activity {
                 String urlstr = "http://swopenapi.seoul.go.kr/api/subway/476f787954646c64313039455278624d/xml/stationSection/1/10/"+encodedStationName+"/";
                 SubwayCommingInfoThread thread = new SubwayCommingInfoThread(urlstr);
                 thread.start();
+                inputMethodManager.hideSoftInputFromWindow(okBtn.getWindowToken(),0);
 
-
-                /*
+                /* 테스트를 위한 코드
                 Intent intent = new Intent(SettingView.this,TimeSettingView.class);
                 //intent.putExtra("stationName", stationName.getText().toString());
                 //intent.putExtra("direction" , direction.getText().toString());
@@ -136,7 +134,7 @@ public class SettingView extends Activity {
                     public void run() {
                         cleanSettingItem();
                         for(String e : output){
-                            addNewSettingItem(autoTextView.getText().toString(), e+" 방면");
+                            addNewSettingItem(autoTextView.getText().toString(), e);
                         }
                         refresh();
                     }
