@@ -37,7 +37,7 @@ public class SettingItemView extends LinearLayout {
                 Intent intent = new Intent(context,TimeSettingView.class);
                 intent.putExtra("stationName", stationName.getText().toString());
                 intent.putExtra("direction" , direction.getText().toString());
-                context.startActivity(intent);
+                ((SettingView)context).startActivityForResult(intent, 1);
             }
         });
 

@@ -1,17 +1,20 @@
 package org.androidtown.demo2;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
@@ -44,6 +47,7 @@ public class SettingView extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setting);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.settingtoolbar);
         toolbar.setTitle("역 검색");
 
@@ -53,6 +57,7 @@ public class SettingView extends Activity {
         okBtn = (Button) findViewById(R.id.okBtn);
         autoTextView = (AutoCompleteTextView) findViewById(R.id.autoStationName);
 
+        final InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         handler = new Handler();
         adapter = new SettingItemListAdapter(this);
         ArrayAdapter<String> autoTextadapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,stations);
@@ -72,8 +77,8 @@ public class SettingView extends Activity {
         okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //adapter.cleanItem();
-                //adapter.addItem(new SettingItem(autoTextView.getText().toString() , "랄라"));
+
+
                 String encodedStationName = null;
                 try {
                     encodedStationName = URLEncoder.encode(autoTextView.getText().toString().trim(),"UTF-8");
@@ -83,6 +88,14 @@ public class SettingView extends Activity {
                 String urlstr = "http://swopenapi.seoul.go.kr/api/subway/476f787954646c64313039455278624d/xml/stationSection/1/10/"+encodedStationName+"/";
                 SubwayCommingInfoThread thread = new SubwayCommingInfoThread(urlstr);
                 thread.start();
+
+
+                /*
+                Intent intent = new Intent(SettingView.this,TimeSettingView.class);
+                //intent.putExtra("stationName", stationName.getText().toString());
+                //intent.putExtra("direction" , direction.getText().toString());
+                (SettingView.this).startActivityForResult(intent, 1);
+                */
             }
         });
     }
@@ -98,6 +111,14 @@ public class SettingView extends Activity {
         adapter.cleanItem();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == 1){
+            setResult(1,data);
+            finish();
+        }
+        setResult(0);
+    }
 
     class SubwayCommingInfoThread extends Thread {
         String urlStr;

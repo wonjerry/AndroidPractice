@@ -15,10 +15,13 @@ import android.widget.Toast;
 import static org.androidtown.demo2.R.id.fab;
 
 public class MainActivity extends AppCompatActivity {
-
     ListView listView;
     ItemListAdapter adapter;
     FloatingActionButton addBtn;
+    String stationName;
+    String direction;
+    String startTime;
+    String duringTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,SettingView.class);
-                startActivity(intent);
+                startActivityForResult(intent,1);
                 //addNewItem();
                 //refresh();
             }
@@ -63,14 +66,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //새로운 아이템을 추가하기 위한 메소드
-    private void addNewItem(){
-        adapter.addItem(new Item("하계","공릉","8:30 am","금요일"));
-        adapter.addItem(new Item("건대입구","어린이대공원","7:30 am","월요일"));
+    private void addNewItem(String stationName, String direction, String startTime, String duringTime){
+        adapter.addItem(new Item(stationName , direction , startTime, duringTime));
     }
 
     //정보가 업데이트 된 후에 listView를 업데이트 하기 위한 메소드
     private void refresh(){
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == 1){
+            stationName = data.getExtras().getString("stationName");
+            direction = data.getExtras().getString("direction");
+            startTime = data.getExtras().getString("startTime");
+            duringTime = data.getExtras().getString("days");
+            addNewItem(stationName , direction , startTime, duringTime);
+            refresh();
+        }
     }
 
     @Override
