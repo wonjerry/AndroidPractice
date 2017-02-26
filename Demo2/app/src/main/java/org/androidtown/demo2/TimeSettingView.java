@@ -68,6 +68,7 @@ public class TimeSettingView extends Activity implements View.OnClickListener{
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setResult(0);
                 finish();
             }
         });

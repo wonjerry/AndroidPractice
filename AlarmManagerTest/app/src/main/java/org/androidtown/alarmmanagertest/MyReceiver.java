@@ -16,9 +16,8 @@ import static android.R.attr.id;
  */
 
 public class MyReceiver extends BroadcastReceiver {
-    //int id = 1;
     public MyReceiver(){
-        //this.id = id;
+
     }
     Calendar calendar;
 
