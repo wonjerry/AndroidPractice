@@ -16,23 +16,22 @@ import android.widget.Toast;
 import static org.androidtown.demo2.R.id.fab;
 
 public class MainActivity extends AppCompatActivity {
+
     private ListView listView;
     private ItemListAdapter adapter;
     private FloatingActionButton addBtn;
-    private String stationName;
-    private String direction;
-    private String startTime;
-    private String days;
     private DBManager dbManager;
     private SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("지금 온다!");
         setSupportActionBar(toolbar);
+        listView.setFocusable(false);
 
         //DBManager 객체를 생성하면서 필요한 정보를 생성자로 전달
         dbManager = new DBManager(this, "coming.db", null, 1);
@@ -46,10 +45,7 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ItemListAdapter(this);
 
         //DB 데이터들을 다시 리스트뷰로 뿌려준다.
-        initMainListView();
-
-        //listview를 띄웠을 때, 안눌리는 문제를 해결하기 위해 설정
-        listView.setFocusable(false);
+        initMainListViewFromDB();
 
         //adpter 연결
         listView.setAdapter(adapter);
@@ -74,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void initMainListView() {
+    public void initMainListViewFromDB() {
         String[][] dbData;
         int index = 0;
 
@@ -103,15 +99,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == 1){
-            boolean distinctCheck;
-            stationName = data.getExtras().getString("stationName");
-            direction = data.getExtras().getString("direction");
-            startTime = data.getExtras().getString("startTime");
-            days = data.getExtras().getString("days");
+            Bundle input = data.getExtras();
+            String stationName = input.getString("stationName");
+            String direction = input.getString("direction");
+            String startTime = input.getString("startTime");
+            String days = input.getString("days");
 
             //DB안의 데이터와 중복검사
-            distinctCheck = dbManager.distinct(stationName, direction, startTime, days);
-            if (distinctCheck == false) {
+            if (dbManager.distinct(stationName, direction, startTime, days) == false) {
                 dbManager.insert(stationName, direction, startTime, days);
                 addNewItem(stationName , direction , startTime, days);
             }
