@@ -22,6 +22,9 @@ public class ItemListAdapter extends BaseAdapter {
     public void addItem(Item item){
         mItems.add(item);
     }
+    public void cleanItem(){
+        mItems.clear();
+    }
 
     @Override
     public int getCount() {

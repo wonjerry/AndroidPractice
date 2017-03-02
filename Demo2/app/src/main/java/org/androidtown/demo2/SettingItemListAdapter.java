@@ -19,7 +19,6 @@ public class SettingItemListAdapter extends BaseAdapter {
     public SettingItemListAdapter(Context mConText) {
         this.mConText = mConText;
     }
-
     public void addItem(SettingItem item){
         mItems.add(item);
     }

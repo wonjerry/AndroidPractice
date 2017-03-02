@@ -8,11 +8,10 @@ import java.util.Arrays;
 
 public class Item {
     private String[] mData;
-    private  boolean enalble;
+    private  boolean enalble = true;
 
     public Item(String[] obj) {
         this.mData = obj;
-        enalble = true;
     }
 
     public Item(String stationName, String direction, String startTime, String duringTime) {
@@ -22,7 +21,6 @@ public class Item {
         mData[1] = direction;
         mData[2] = startTime;
         mData[3] = duringTime;
-        enalble = true;
     }
 
     public String[] getData() {
