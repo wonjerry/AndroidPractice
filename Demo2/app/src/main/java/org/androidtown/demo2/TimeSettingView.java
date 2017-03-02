@@ -92,9 +92,9 @@ public class TimeSettingView extends Activity implements View.OnClickListener{
         int hour = timePicker.getHour();
         int min = timePicker.getMinute();
 
-        if(hour > 12) return "오후 "+ (hour -= 12)  + " 시 "+ min + "분";
-        if(hour == 12) return "오후 "+ hour + " 시 "+ min + "분";
-        return "오전"+ hour + " 시 "+ min + "분";
+        if(hour > 12) return "오후 "+ (hour -= 12)  + " 시 "+ min + " 분";
+        if(hour == 12) return "오후 "+ hour + " 시 "+ min + " 분";
+        return "오전 "+ hour + " 시 "+ min + " 분";
     }
 
     private String getDaysInfo(){
