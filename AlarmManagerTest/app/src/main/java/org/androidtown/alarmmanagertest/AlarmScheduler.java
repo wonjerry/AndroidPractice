@@ -20,7 +20,7 @@ public class AlarmScheduler {
 
     public AlarmScheduler(Context context , AlarmManager alarmManager){
         this.alarmManager = alarmManager;
-        this.alarmManagerUtil = new AlarmManagerUtil(alarmManager);
+        //this.alarmManagerUtil = new AlarmManagerUtil(alarmManager);
         this.context = context;
     }
 
@@ -30,10 +30,7 @@ public class AlarmScheduler {
     }
 
     private PendingIntent getRepeatingAlarmPendingIntent(int dayInt){
-        int requestCode = dayInt + BASE_REQUEST_CODE;
-        Intent intent = new Intent(context, AlarmReceiver.class);
-        intent.putExtra(AlarmReceiver.KEY_DAY_INT, dayInt);
 
-        return PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getBroadcast(context, 0, null, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

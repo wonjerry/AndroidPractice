@@ -14,8 +14,11 @@ import java.util.GregorianCalendar;
 public class AlarmManagerUtil {
     AlarmManager alarmManager;
 
-    public AlarmManagerUtil(AlarmManager alarmManager){
+    private AlarmManagerUtil(AlarmManager alarmManager){
         this.alarmManager = alarmManager;
+    }
+    public static AlarmManagerUtil getInstance(AlarmManager alarmManager){
+        return new AlarmManagerUtil(alarmManager);
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void setOnceAlarm(int hourOfDay, int minute, PendingIntent alarmPendingIntent){

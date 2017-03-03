@@ -3,6 +3,7 @@
     package="org.androidtown.alarmmanagertest">
 
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
     <application
         android:allowBackup="true"
@@ -18,6 +19,7 @@
             </intent-filter>
         </activity>
         <receiver android:name=".MyReceiver"></receiver>
+        <receiver android:name=".AlarmStartReceiver"></receiver>
     </application>
 
 </manifest>

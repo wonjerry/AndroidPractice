@@ -16,8 +16,5 @@ public class AlarmReciever extends WakefulBroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         int dayInt = intent.getIntExtra(KEY_DAY_INT, -1);
 
-        if( dayInt != -1){
-            Intent service = new Intent(context, AlarmS)
-        }
     }
 }

@@ -33,21 +33,19 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         listView.setFocusable(false);
 
+        //view, button 들 참조
+        addBtn = (FloatingActionButton) findViewById(fab);
+        listView = (ListView) findViewById(R.id.listView);
+        adapter = new ItemListAdapter(this);
+
         //DBManager 객체를 생성하면서 필요한 정보를 생성자로 전달
         dbManager = new DBManager(this, "coming.db", null, 1);
         db = dbManager.getWritableDatabase();
         db.close();
         dbManager.close();
 
-        //view, button 들 참조
-        addBtn = (FloatingActionButton) findViewById(fab);
-        listView = (ListView) findViewById(R.id.listView);
-        adapter = new ItemListAdapter(this);
-
-        //DB 데이터들을 다시 리스트뷰로 뿌려준다.
+        //초기화면 세팅
         initMainListViewFromDB();
-
-        //adpter 연결
         listView.setAdapter(adapter);
 
         //listview 의 아이템 클릭시 이벤트
@@ -70,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+
     public void initMainListViewFromDB() {
         String[][] dbData;
         int index = 0;
@@ -79,16 +79,11 @@ public class MainActivity extends AppCompatActivity {
             adapter.cleanItem();
         else {
             while (index < dbData.length) {
-                adapter.addItem(new Item(dbData[index][0], dbData[index][1], dbData[index][2], dbData[index][3]));
+                adapter.addItem(dbData[index][0], dbData[index][1], dbData[index][2], dbData[index][3]);
                 index++;
             }
         }//else
     }//onView
-
-    //새로운 아이템을 추가하기 위한 메소드
-    private void addNewItem(String stationName, String direction, String startTime, String duringTime){
-        adapter.addItem(new Item(stationName , direction , startTime, duringTime));
-    }
 
     //정보가 업데이트 된 후에 listView를 업데이트 하기 위한 메소드
     private void refresh(){
@@ -108,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             //DB안의 데이터와 중복검사
             if (dbManager.distinct(stationName, direction, startTime, days) == false) {
                 dbManager.insert(stationName, direction, startTime, days);
-                addNewItem(stationName , direction , startTime, days);
+                adapter.addItem(stationName , direction , startTime, days);
             }
             refresh();
         }

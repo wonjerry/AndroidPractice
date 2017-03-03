@@ -19,8 +19,8 @@ public class ItemListAdapter extends BaseAdapter {
     public ItemListAdapter(Context mConText) {
         this.mConText = mConText;
     }
-    public void addItem(Item item){
-        mItems.add(item);
+    public void addItem(String stationName, String direction, String startTime, String days){
+        mItems.add(new Item(stationName, direction, startTime, days));
     }
     public void cleanItem(){
         mItems.clear();
