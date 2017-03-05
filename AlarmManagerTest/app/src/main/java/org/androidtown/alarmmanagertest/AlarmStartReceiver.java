@@ -21,9 +21,8 @@ public class AlarmStartReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        //int period = intent.getExtras().getInt("period");
         Intent receiverIntent = new Intent(context, MyReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,0,receiverIntent,0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,22,receiverIntent,0);
         GregorianCalendar calendar = (GregorianCalendar) GregorianCalendar.getInstance();
 
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),60*1000,pendingIntent);

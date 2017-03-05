@@ -82,11 +82,9 @@ public class MyReceiver extends BroadcastReceiver {
                         mBuilder.setSmallIcon(R.mipmap.ic_launcher);
                         mBuilder.setTicker("hi");
                         mBuilder.setContentTitle("알리미");
-                        //mBuilder.setContentText(calendar.getTime().toString() + id);
-                        for(String e : output){
-                            //addNewSettingItem(autoTextView.getText().toString(), e);
-                            sb.append(e);
-                        }
+
+                        for(String e : output) sb.append(e);
+
                         mBuilder.setContentText(sb.toString());
 
                         Log.e("hi : ",calendar.getTime().toString());
@@ -121,7 +119,6 @@ public class MyReceiver extends BroadcastReceiver {
 
         private ArrayList<String> request(String urlStr){
 
-            StringBuilder output = new StringBuilder();
             ArrayList<String> results = new ArrayList<String>();
             try{
                 URL url = new URL(urlStr);

@@ -18,8 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".MyReceiver"></receiver>
-        <receiver android:name=".AlarmStartReceiver"></receiver>
+        <receiver android:name=".MyReceiver" android:process=":remote"></receiver>
+        <receiver android:name=".AlarmStartReceiver" android:process=":remote"></receiver>
     </application>
 
 </manifest>
