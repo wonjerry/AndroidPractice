@@ -1,6 +1,11 @@
 package org.androidtown.demo2;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -30,14 +35,27 @@ public class ItemView extends LinearLayout {
 
         //enable button이 check 되면 알람 활성화 uncheck 되면 알람 cancel
         enableBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+
+            // enable 버튼의 상태에 따라서 알람 설정 또는 해제한다.
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                item.setEnalble(isChecked);
                 if(isChecked){
-                    item.setEnalble(true);
+                    Intent receiverIntent = new Intent(context, AlarmStartReceiver.class);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(context,item.getId(),receiverIntent,0);
+                    AlarmManagerUtil.getInstance(alarmManager).setOnceAlarm(11,18,pendingIntent);
                     Toast.makeText(context, "활성화" , Toast.LENGTH_LONG).show();
                 }else{
-                    item.setEnalble(false);
-                    Toast.makeText(context, "비활성화" , Toast.LENGTH_LONG).show();
+                    Intent receiverIntent = new Intent(context, MyReceiver.class);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(context,item.getId(),receiverIntent,PendingIntent.FLAG_NO_CREATE);
+                    if(pendingIntent != null){
+                        alarmManager.cancel(pendingIntent);
+                        pendingIntent.cancel();
+                    }else{
+                        Toast.makeText(context,"null 입니다.",Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });

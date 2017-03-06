@@ -81,6 +81,8 @@ public class TimeSettingView extends Activity implements View.OnClickListener{
                 intent.putExtra("stationName" , stationName);
                 intent.putExtra("direction" , direction);
                 intent.putExtra("startTime" , getTimePickerInfo());
+                intent.putExtra("startTimeHour",getStartTimeHour());
+                intent.putExtra("startTimeMinute",getStartTimeMinute());
                 intent.putExtra("days" , getDaysInfo());
                 setResult(1,intent);
                 finish();
@@ -96,6 +98,15 @@ public class TimeSettingView extends Activity implements View.OnClickListener{
         if(hour > 12) return "오후 "+ (hour -= 12)  + " 시 "+ min + " 분";
         if(hour == 12) return "오후 "+ hour + " 시 "+ min + " 분";
         return "오전 "+ hour + " 시 "+ min + " 분";
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private int getStartTimeHour(){
+        return timePicker.getHour();
+    }
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private int getStartTimeMinute(){
+        return timePicker.getMinute();
     }
 
     private String getDaysInfo(){

@@ -8,10 +8,14 @@ import java.util.Arrays;
 
 public class Item {
     private String[] mData;
-    private  boolean enalble = true;
+    private int id = -1;
+    private int startTimeHour = 0;
+    private int startTimeMinute = 0;
+    private  boolean enalble;
 
     public Item(String[] obj) {
         this.mData = obj;
+        this.enalble = true;
     }
 
     public Item(String stationName, String direction, String startTime, String duringTime) {
@@ -21,6 +25,23 @@ public class Item {
         mData[1] = direction;
         mData[2] = startTime;
         mData[3] = duringTime;
+    }
+
+    //upgrade version for checking enable and id
+    public Item(String id, String stationName, String direction, String startTime, String duringTime, String enable) {
+        this.mData = new String[4];
+        mData[0] = stationName;
+        mData[1] = direction;
+        mData[2] = startTime;
+        mData[3] = duringTime;
+
+        this.id = Integer.parseInt(id);
+
+        if("0".equals(enable)){
+            this.enalble = false;
+        }else{
+            this.enalble = true;
+        }
     }
 
     public String[] getData() {
@@ -37,12 +58,28 @@ public class Item {
         return enalble;
     }
 
+    public int getId(){
+        return this.id;
+    }
+
+    public int getStartTimeHour(){
+        return this.startTimeHour;
+    }
+
+    public int getStartTimeMinute(){
+        return this.startTimeMinute;
+    }
+
     public void setData(String[] obj){
         mData = obj;
     }
 
     public void setEnalble(boolean enalble){
         this.enalble = enalble;
+    }
+
+    public void setId(int id){
+        this.id = id;
     }
 
     public void setData(String stationName, String direction, String startTime, String days) {
@@ -52,6 +89,14 @@ public class Item {
         mData[1] = direction;
         mData[2] = startTime;
         mData[3] = days;
+    }
+
+    public void setStartTimeHour(int hour){
+        this.startTimeHour = hour;
+    }
+
+    public void setStartTimeMinute(int minute){
+        this.startTimeHour = minute;
     }
 
     @Override

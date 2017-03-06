@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+// 약간의 수정 필요 테이블 정보랑 여러가지 기타 등등을 수정 하능 할 것으로 보인다.
     public void initMainListViewFromDB() {
         String[][] dbData;
         int index = 0;
@@ -99,11 +99,14 @@ public class MainActivity extends AppCompatActivity {
             String direction = input.getString("direction");
             String startTime = input.getString("startTime");
             String days = input.getString("days");
+            int startTimeHour = input.getInt("startTimeHour");
+            int startTimeMinute = input.getInt("startTimeMinute");
 
             //DB안의 데이터와 중복검사
-            if (dbManager.distinct(stationName, direction, startTime, days) == false) {
+            if (!dbManager.distinct(stationName, direction, startTime, days)) {
                 dbManager.insert(stationName, direction, startTime, days);
                 adapter.addItem(stationName , direction , startTime, days);
+
             }
             refresh();
         }
