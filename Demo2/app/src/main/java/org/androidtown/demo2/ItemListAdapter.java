@@ -19,8 +19,13 @@ public class ItemListAdapter extends BaseAdapter {
     public ItemListAdapter(Context mConText) {
         this.mConText = mConText;
     }
-    public void addItem(String stationName, String direction, String startTime, String days){
-        mItems.add(new Item(stationName, direction, startTime, days));
+
+    //public void addItem(String stationName, String direction, String startTime, String days){
+    //    mItems.add(new Item(stationName, direction, startTime, days));
+    //}
+
+    public void addItem(int id, String stationName, String direction, int startTimeHour, int startTimeMinute , String days, int enable){
+        mItems.add(new Item(id, stationName, direction, startTimeHour, startTimeMinute, days, enable));
     }
 
     public void cleanItem(){
@@ -52,7 +57,6 @@ public class ItemListAdapter extends BaseAdapter {
 
         itemView = new ItemView(mConText, mItems.get(position));
 
-        itemView.setEnableBtn(mItems.get(position).getEnable());
         itemView.setText(0,mItems.get(position).getData(0));
         itemView.setText(1,mItems.get(position).getData(1));
         itemView.setText(2,mItems.get(position).getData(2));

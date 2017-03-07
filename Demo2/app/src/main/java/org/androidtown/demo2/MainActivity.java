@@ -31,15 +31,16 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("지금 온다!");
         setSupportActionBar(toolbar);
-        listView.setFocusable(false);
+
 
         //view, button 들 참조
         addBtn = (FloatingActionButton) findViewById(fab);
         listView = (ListView) findViewById(R.id.listView);
         adapter = new ItemListAdapter(this);
+        listView.setFocusable(false);
 
         //DBManager 객체를 생성하면서 필요한 정보를 생성자로 전달
-        dbManager = new DBManager(this, "coming.db", null, 1);
+        dbManager = new DBManager(this, "metro.db", null, 2);
         db = dbManager.getWritableDatabase();
         db.close();
         dbManager.close();
@@ -71,18 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
 // 약간의 수정 필요 테이블 정보랑 여러가지 기타 등등을 수정 하능 할 것으로 보인다.
     public void initMainListViewFromDB() {
-        String[][] dbData;
-        int index = 0;
-
-        dbData = dbManager.load();
-        if (dbData == null)
-            adapter.cleanItem();
-        else {
-            while (index < dbData.length) {
-                adapter.addItem(dbData[index][0], dbData[index][1], dbData[index][2], dbData[index][3]);
-                index++;
-            }
-        }//else
+        dbManager.load(adapter);
     }//onView
 
     //정보가 업데이트 된 후에 listView를 업데이트 하기 위한 메소드
@@ -97,15 +87,14 @@ public class MainActivity extends AppCompatActivity {
             Bundle input = data.getExtras();
             String stationName = input.getString("stationName");
             String direction = input.getString("direction");
-            String startTime = input.getString("startTime");
             String days = input.getString("days");
             int startTimeHour = input.getInt("startTimeHour");
             int startTimeMinute = input.getInt("startTimeMinute");
 
             //DB안의 데이터와 중복검사
-            if (!dbManager.distinct(stationName, direction, startTime, days)) {
-                dbManager.insert(stationName, direction, startTime, days);
-                adapter.addItem(stationName , direction , startTime, days);
+            if (!dbManager.distinct(stationName, direction, startTimeHour, startTimeMinute, days)) {
+                dbManager.insert(stationName, direction, startTimeHour, startTimeMinute, days, 1);
+                adapter.addItem(dbManager.lastID(),stationName , direction , startTimeHour,startTimeMinute, days, 1);
 
             }
             refresh();

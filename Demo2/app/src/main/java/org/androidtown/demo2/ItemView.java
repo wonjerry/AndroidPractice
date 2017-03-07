@@ -31,6 +31,7 @@ public class ItemView extends LinearLayout {
         inflater.inflate(R.layout.item , this, true);
 
         enableBtn = (Switch)findViewById(R.id.enableBtn);
+        enableBtn.setChecked(item.getEnable());
         enableBtn.setFocusable(false);
 
         //enable button이 check 되면 알람 활성화 uncheck 되면 알람 cancel
@@ -45,10 +46,10 @@ public class ItemView extends LinearLayout {
                 if(isChecked){
                     Intent receiverIntent = new Intent(context, AlarmStartReceiver.class);
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(context,item.getId(),receiverIntent,0);
-                    AlarmManagerUtil.getInstance(alarmManager).setOnceAlarm(11,18,pendingIntent);
+                    AlarmManagerUtil.getInstance(alarmManager).setOnceAlarm(item.getStartTimeHour(),item.getStartTimeMinute(),pendingIntent);
                     Toast.makeText(context, "활성화" , Toast.LENGTH_LONG).show();
                 }else{
-                    Intent receiverIntent = new Intent(context, MyReceiver.class);
+                    Intent receiverIntent = new Intent(context, AlarmStartReceiver.class);
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(context,item.getId(),receiverIntent,PendingIntent.FLAG_NO_CREATE);
                     if(pendingIntent != null){
                         alarmManager.cancel(pendingIntent);

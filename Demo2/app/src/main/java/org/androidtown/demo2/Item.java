@@ -11,11 +11,11 @@ public class Item {
     private int id = -1;
     private int startTimeHour = 0;
     private int startTimeMinute = 0;
-    private  boolean enalble;
+    private boolean enable;
 
     public Item(String[] obj) {
         this.mData = obj;
-        this.enalble = true;
+        this.enable = true;
     }
 
     public Item(String stationName, String direction, String startTime, String duringTime) {
@@ -27,58 +27,64 @@ public class Item {
         mData[3] = duringTime;
     }
 
-    //upgrade version for checking enable and id
-    public Item(String id, String stationName, String direction, String startTime, String duringTime, String enable) {
+    public Item(int id, String stationName, String direction, int startTimeHour , int startTimeMinute, String days, int enable) {
+
+        setId(id);
+
         this.mData = new String[4];
+
         mData[0] = stationName;
         mData[1] = direction;
-        mData[2] = startTime;
-        mData[3] = duringTime;
 
-        this.id = Integer.parseInt(id);
+        if(startTimeHour > 12) mData[2] =  "오후 "+ (startTimeHour - 12)  + " 시 "+ startTimeMinute + " 분";
+        else if(startTimeHour == 12) mData[2] =  "오후 "+ startTimeHour + " 시 "+ startTimeMinute + " 분";
+        else mData[2] = "오전 "+ startTimeHour + " 시 "+ startTimeMinute + " 분";
 
-        if("0".equals(enable)){
-            this.enalble = false;
-        }else{
-            this.enalble = true;
-        }
+        setStartTimeHour(startTimeHour);
+        setStartTimeMinute(startTimeMinute);
+
+        mData[3] = days;
+
+        if(enable == 0) this.enable = false;
+        else this.enable = true;
+
     }
 
     public String[] getData() {
         return mData;
     }
 
-    public String getData(int index){
-        if(mData == null || index >= mData.length) return null;
+    public String getData(int index) {
+        if (mData == null || index >= mData.length) return null;
 
         return mData[index];
     }
 
-    public boolean getEnable(){
-        return enalble;
+    public boolean getEnable() {
+        return enable;
     }
 
-    public int getId(){
+    public int getId() {
         return this.id;
     }
 
-    public int getStartTimeHour(){
+    public int getStartTimeHour() {
         return this.startTimeHour;
     }
 
-    public int getStartTimeMinute(){
+    public int getStartTimeMinute() {
         return this.startTimeMinute;
     }
 
-    public void setData(String[] obj){
+    public void setData(String[] obj) {
         mData = obj;
     }
 
-    public void setEnalble(boolean enalble){
-        this.enalble = enalble;
+    public void setEnalble(boolean enalble) {
+        this.enable = enalble;
     }
 
-    public void setId(int id){
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -91,35 +97,11 @@ public class Item {
         mData[3] = days;
     }
 
-    public void setStartTimeHour(int hour){
+    public void setStartTimeHour(int hour) {
         this.startTimeHour = hour;
     }
 
-    public void setStartTimeMinute(int minute){
-        this.startTimeHour = minute;
-    }
-
-    @Override
-    public String toString() {
-        return "Item{" +
-                "mData=" + Arrays.toString(mData) +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Item)) return false;
-
-        Item item = (Item) o;
-
-        // Probably incorrect - comparing Object[] arrays with Arrays.equals
-        return Arrays.equals(mData, item.mData);
-
-    }
-
-    @Override
-    public int hashCode() {
-        return Arrays.hashCode(mData);
+    public void setStartTimeMinute(int minute) {
+        this.startTimeMinute = minute;
     }
 }

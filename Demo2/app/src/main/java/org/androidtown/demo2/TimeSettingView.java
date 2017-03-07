@@ -80,7 +80,6 @@ public class TimeSettingView extends Activity implements View.OnClickListener{
                 Intent intent = new Intent();
                 intent.putExtra("stationName" , stationName);
                 intent.putExtra("direction" , direction);
-                intent.putExtra("startTime" , getTimePickerInfo());
                 intent.putExtra("startTimeHour",getStartTimeHour());
                 intent.putExtra("startTimeMinute",getStartTimeMinute());
                 intent.putExtra("days" , getDaysInfo());

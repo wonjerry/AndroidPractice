@@ -19,6 +19,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <activity android:name=".SettingView"
@@ -31,6 +32,10 @@
             android:theme="@android:style/Theme.Holo.Light.Dialog"
             >
         </activity>
+
+        <receiver android:name=".MyReceiver" android:process=":remote"></receiver>
+        <receiver android:name=".AlarmStartReceiver" android:process=":remote"></receiver>
     </application>
+
 
 </manifest>
