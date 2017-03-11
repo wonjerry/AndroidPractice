@@ -1,8 +1,9 @@
 package org.androidtown.demo2;
 
 import android.annotation.TargetApi;
-import android.app.Notification;
+import android.app.AlarmManager;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +11,10 @@ import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
+import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -31,30 +35,52 @@ import javax.xml.parsers.DocumentBuilderFactory;
  */
 
 public class MyReceiver extends BroadcastReceiver {
-    public MyReceiver(){
 
-    }
-    Calendar calendar;
-    Handler handler;
-    Notification.Builder mBuilder;
-    NotificationManager nm;
+    private Calendar calendar;
+    private Handler handler;
+    private NotificationCompat.Builder mBuilder;
+    private NotificationManager nm;
+    private RemoteViews contentView;
+
+    int repeatingAlarmId;
+    private Context mContext;
+    private String stationName;
+    private String direction;
 
     @TargetApi(Build.VERSION_CODES.N)
     @Override
     public void onReceive(Context context, Intent intent) {
-        nm = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-        calendar = Calendar.getInstance();
-        mBuilder = new Notification.Builder(context);
-        handler = new Handler();
+        this.mContext = context;
+        this.nm = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+        this.calendar = Calendar.getInstance();
+        this.handler = new Handler();
+        this.repeatingAlarmId = intent.getExtras().getInt("id");
+        this.stationName = intent.getExtras().getString("stationName");
+        this.direction = intent.getExtras().getString("direction");
+
         String encodedStationName = null;
         try {
-            encodedStationName = URLEncoder.encode("하계","UTF-8");
+            encodedStationName = URLEncoder.encode(stationName,"UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        String urlstr = "http://swopenapi.seoul.go.kr/api/subway/476f787954646c64313039455278624d/xml/stationSection/1/10/"+encodedStationName+"/";
+
+        String urlstr = "http://swopenapi.seoul.go.kr/api/subway/476f787954646c64313039455278624d/xml/realtimeStationArrival/1/10/"+encodedStationName+"/";
         SubwayCommingInfoThread thread = new SubwayCommingInfoThread(urlstr);
         thread.start();
+    }
+
+    private void repeatingAlarmCancel(){
+        AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+        Intent receiverIntent = new Intent(mContext, MyReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext,repeatingAlarmId,receiverIntent,PendingIntent.FLAG_NO_CREATE);
+
+        if(pendingIntent != null){
+            alarmManager.cancel(pendingIntent);
+            pendingIntent.cancel();
+        }else{
+            Toast.makeText(mContext,"null 입니다.",Toast.LENGTH_LONG).show();
+        }
     }
 
     class SubwayCommingInfoThread extends Thread {
@@ -73,19 +99,24 @@ public class MyReceiver extends BroadcastReceiver {
                     @Override
                     public void run() {
                         StringBuilder sb = new StringBuilder();
+                        /*
+                        mBuilder.setVisibility(Notification.VISIBILITY_PUBLIC);
                         mBuilder.setSmallIcon(R.mipmap.ic_launcher);
                         mBuilder.setTicker("hi");
-                        mBuilder.setContentTitle("알리미");
+                        mBuilder.setContentTitle("지금온다!");
+                        */
+                        contentView = new RemoteViews(mContext.getPackageName(), R.layout.custom_notification);
+                        contentView.setImageViewResource(R.id.weatherImage,R.drawable.sunnyimage);
+                        contentView.setTextViewText(R.id.setInformation,stationName + " " + direction);
 
-                        for(String e : output) sb.append(e);
+                        for(String e : output) sb.append(e + " ");
 
-                        mBuilder.setContentText(sb.toString());
+                        contentView.setTextViewText(R.id.arrivalInfomation,sb.toString());
+                        mBuilder = new NotificationCompat.Builder(mContext);
+                        mBuilder.setSmallIcon(android.R.drawable.stat_notify_more);
+                        mBuilder.setContent(contentView);
 
-                        Log.e("hi : ",calendar.getTime().toString());
-
-                        mBuilder.setDefaults(Notification.DEFAULT_SOUND|Notification.DEFAULT_VIBRATE);
-                        mBuilder.setAutoCancel(true);
-                        nm.notify(111,mBuilder.build());
+                        nm.notify(repeatingAlarmId,mBuilder.build());
                     }
                 });
 
@@ -128,9 +159,13 @@ public class MyReceiver extends BroadcastReceiver {
                     if (resCode == HttpURLConnection.HTTP_OK){
                         Document doc = parseXML(conn.getInputStream());
                         int total = Integer.parseInt(doc.getElementsByTagName("total").item(0).getTextContent());
-                        NodeList finishStationName = doc.getElementsByTagName("statnTnm");
+                        NodeList arrivalInformaltion = doc.getElementsByTagName("arvlMsg2");
+                        NodeList subwayDirection = doc.getElementsByTagName("trainLineNm");
+
                         for(int i=0; i<total; i++){
-                            results.add(finishStationName.item(i).getTextContent());
+                            if(direction.equals(subwayDirection.item(i).getTextContent())){
+                                results.add(arrivalInformaltion.item(i).getTextContent());
+                            }
                         }
                     }
                 }

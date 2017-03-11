@@ -1,6 +1,11 @@
 package org.androidtown.demo2;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -24,7 +29,14 @@ public class ItemListAdapter extends BaseAdapter {
     //    mItems.add(new Item(stationName, direction, startTime, days));
     //}
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void addItem(int id, String stationName, String direction, int startTimeHour, int startTimeMinute , String days, int enable){
+
+        AlarmManager alarmManager = (AlarmManager) mConText.getSystemService(Context.ALARM_SERVICE);
+        Intent receiverIntent = new Intent(mConText, AlarmStartReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(mConText,id,receiverIntent,0);
+        AlarmManagerUtil.getInstance(alarmManager).setOnceAlarm(startTimeHour,startTimeMinute,pendingIntent);
+
         mItems.add(new Item(id, stationName, direction, startTimeHour, startTimeMinute, days, enable));
     }
 

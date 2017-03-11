@@ -21,10 +21,15 @@ public class AlarmStartReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent receiverIntent = new Intent(context, MyReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,22,receiverIntent,0);
-        GregorianCalendar calendar = (GregorianCalendar) GregorianCalendar.getInstance();
+        int repeatAlarmId = intent.getExtras().getInt("id") + 30;
 
+        Intent receiverIntent = new Intent(context, MyReceiver.class);
+        receiverIntent.putExtra("id",repeatAlarmId);
+        receiverIntent.putExtra("stationName",intent.getExtras().getInt("stationName"));
+        receiverIntent.putExtra("direction",intent.getExtras().getInt("direction"));
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,repeatAlarmId,receiverIntent,0);
+        GregorianCalendar calendar = (GregorianCalendar) GregorianCalendar.getInstance();
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),60*1000,pendingIntent);
     }
 }

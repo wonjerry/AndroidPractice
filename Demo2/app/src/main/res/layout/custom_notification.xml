@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_weight="4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <ImageView
+            android:id="@+id/weatherImage"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/temperatureInfo"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text=" -9 도"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_weight="3"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/setInformation"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="건대입구 구의방면"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/arrivalInfomation"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="5분전"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_weight="4"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/refreshBtn"
+            android:text="refresh"
+            style="?android:attr/borderlessButtonStyle"
+            android:background="@drawable/noti_button"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_height="35dp"
+            />
+
+        <Button
+            android:id="@+id/offBtn"
+            android:text="off"
+            style="?android:attr/borderlessButtonStyle"
+            android:background="@drawable/noti_button"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_height="35dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

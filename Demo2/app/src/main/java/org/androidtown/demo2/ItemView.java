@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
+import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -17,13 +18,14 @@ import android.widget.Toast;
  * Created by jerry on 2017-02-16.
  */
 
-public class ItemView extends LinearLayout {
+public class ItemView extends LinearLayout implements Checkable {
 
     private TextView stationName;
     private TextView direction;
     private TextView startTime;
     private TextView days;
     private Switch enableBtn;
+    private AlarmManager alarmManager;
 
     public ItemView(final Context context, final Item item) {
         super(context);
@@ -32,7 +34,18 @@ public class ItemView extends LinearLayout {
 
         enableBtn = (Switch)findViewById(R.id.enableBtn);
         enableBtn.setChecked(item.getEnable());
-        enableBtn.setFocusable(false);
+
+        stationName = (TextView) findViewById(R.id.station);
+        stationName.setText(item.getData(0));
+
+        direction = (TextView) findViewById(R.id.direction);
+        direction.setText(item.getData(1));
+
+        startTime = (TextView) findViewById(R.id.startTime);
+        startTime.setText(item.getData(2));
+
+        days = (TextView) findViewById(R.id.days);
+        days.setText(item.getData(3));
 
         //enable button이 check 되면 알람 활성화 uncheck 되면 알람 cancel
         enableBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
@@ -41,10 +54,15 @@ public class ItemView extends LinearLayout {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
                 item.setEnalble(isChecked);
                 if(isChecked){
+                    //리펙토링 하고싶다.
                     Intent receiverIntent = new Intent(context, AlarmStartReceiver.class);
+                    receiverIntent.putExtra("id",item.getId());
+                    receiverIntent.putExtra("stationName", item.getData(0));
+                    receiverIntent.putExtra("direction", item.getData(1));
+
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(context,item.getId(),receiverIntent,0);
                     AlarmManagerUtil.getInstance(alarmManager).setOnceAlarm(item.getStartTimeHour(),item.getStartTimeMinute(),pendingIntent);
                     Toast.makeText(context, "활성화" , Toast.LENGTH_LONG).show();
@@ -61,17 +79,7 @@ public class ItemView extends LinearLayout {
             }
         });
 
-        stationName = (TextView) findViewById(R.id.station);
-        stationName.setText(item.getData(0));
 
-        direction = (TextView) findViewById(R.id.direction);
-        direction.setText(item.getData(1));
-
-        startTime = (TextView) findViewById(R.id.startTime);
-        startTime.setText(item.getData(2));
-
-        days = (TextView) findViewById(R.id.days);
-        days.setText(item.getData(3));
     }
 
     public void setEnableBtn(boolean enable){
@@ -91,5 +99,19 @@ public class ItemView extends LinearLayout {
         }else{
             throw new IllegalArgumentException();
         }
+    }
+    @Override
+    public void setChecked(boolean checked) {
+
+    }
+
+    @Override
+    public boolean isChecked() {
+        return false;
+    }
+
+    @Override
+    public void toggle() {
+
     }
 }

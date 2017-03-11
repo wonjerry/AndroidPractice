@@ -1,6 +1,5 @@
 package org.androidtown.notificationtest;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.net.Uri;
@@ -8,7 +7,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.NotificationCompat;
 import android.view.View;
+import android.widget.RemoteViews;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -17,7 +18,10 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 public class MainActivity extends AppCompatActivity {
 
-    NotificationManager notificationManager;
+    private NotificationManager notificationManager;
+    private NotificationCompat.Builder mBuilder;
+    private RemoteViews contentView;
+
     private static final int NOTIFICATION_ID = 1;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -30,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         generatNotification();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -38,18 +43,13 @@ public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void generatNotification() {
-        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        Context context = MainActivity.this;
-        Notification notify = new Notification.Builder(context)
-                .setTicker("아주 중요한 메세지")
-                .setContentTitle("오늘의 날씨")
-                .setContentText("영하 -9도 입니다.")
-                .setSmallIcon(android.R.drawable.stat_notify_more)
-                .setWhen(System.currentTimeMillis())
-                .build();
+        contentView = new RemoteViews(getPackageName(), R.layout.custom_notification);
+        contentView.setImageViewResource(R.id.weatherImage,R.drawable.sunnyimage);
+        mBuilder = new NotificationCompat.Builder(this);
+        mBuilder.setSmallIcon(android.R.drawable.stat_notify_more);
+        mBuilder.setContent(contentView);
 
-        notificationManager.notify(NOTIFICATION_ID, notify);
-
+        notificationManager.notify(NOTIFICATION_ID,mBuilder.build());
 
     }
 

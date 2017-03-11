@@ -2,7 +2,9 @@ package org.androidtown.demo2;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -37,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         addBtn = (FloatingActionButton) findViewById(fab);
         listView = (ListView) findViewById(R.id.listView);
         adapter = new ItemListAdapter(this);
-        listView.setFocusable(false);
+
 
         //DBManager 객체를 생성하면서 필요한 정보를 생성자로 전달
         dbManager = new DBManager(this, "metro.db", null, 2);
@@ -67,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent,1);
             }
         });
+
+
     }
 
 
@@ -81,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // 알람 정보 세팅이 끝나면 아이템을 추가함
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == 1){
@@ -95,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
             if (!dbManager.distinct(stationName, direction, startTimeHour, startTimeMinute, days)) {
                 dbManager.insert(stationName, direction, startTimeHour, startTimeMinute, days, 1);
                 adapter.addItem(dbManager.lastID(),stationName , direction , startTimeHour,startTimeMinute, days, 1);
-
             }
             refresh();
         }
